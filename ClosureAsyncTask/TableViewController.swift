@@ -9,6 +9,8 @@
 import UIKit
 
 class TableViewController: UITableViewController {
+    
+    let imgLists = ["https://img1.goodfon.ru/wallpaper/big/6/a2/defense-of-the-ancients-dota-599.jpg","http://www.desivalley.com/wp-content/uploads/2011/09/86.jpg"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,25 +31,44 @@ class TableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 1000
     }
 
-    /*
+    typealias CompletionHandler = (image: UIImage) -> Void
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
+        let cell: testCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! testCell
+        downloadFileFromURL(NSURL(string: imgLists[indexPath.row % 2])!, completionHandler:{(img) in
+             dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                cell.imgView.image = img
+             })
+            })
         // Configure the cell...
+        cell.lblTitle.text = "Row \(indexPath.row)"
 
         return cell
     }
-    */
-
-    /*
+ 
+    func downloadFileFromURL(url1: NSURL?,completionHandler: CompletionHandler) {
+        // download code.
+        if let url = url1{
+        let priority = DISPATCH_QUEUE_PRIORITY_HIGH
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            let data = NSData(contentsOfURL: url)
+            if data != nil {
+                print("image downloaded")
+                completionHandler(image: UIImage(data: data!)!)
+            }
+            }
+        }
+    }
+    
+    
+        /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
